@@ -1,0 +1,45 @@
+{
+  "name": "@rheas/queue",
+  "version": "0.0.1",
+  "description": "Queue handling module of rheas framework",
+  "main": "index.js",
+  "keywords": [
+    "rheas",
+    "express",
+    "framework",
+    "nodejs",
+    "laravel",
+    "server",
+    "library",
+    "queue"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "copypackage": "cp -rf package.json build",
+    "build": "tsc && npm run copypackage",
+    "copypackage_dev": "cp -rf package.json build_dev",
+    "build-dev": "tsc --outDir ./build_dev && npm run copypackage_dev"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.13.2",
+    "jest": "^25.4.0",
+    "ts-jest": "^25.4.0",
+    "typescript": "^3.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rheas-io/queue.git"
+  },
+  "author": "Kalesh Kaladharan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rheas-io/queue/issues"
+  },
+  "homepage": "https://github.com/rheas-io/queue#readme"
+}
