@@ -186,4 +186,15 @@ export abstract class BaseQueue implements IQueue {
             // log the exception etc.
         }).catch((reason) => this.failJob(job).catch((err) => err));
     }
+
+    /**
+     * Call the job events safely.
+     *
+     * @param event
+     */
+    protected raiseEvent(event: () => any) {
+        try {
+            return event();
+        } catch (err) {}
+    }
 }
