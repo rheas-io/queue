@@ -1,4 +1,4 @@
-import { BaseQueue } from './baseQueue';
+import { BaseQueue } from '../baseQueue';
 import { IJob } from '@rheas/contracts/queue';
 
 export class MemoryQueue extends BaseQueue {
@@ -17,6 +17,17 @@ export class MemoryQueue extends BaseQueue {
     public insert(job: IJob): Promise<boolean> {
         this._jobs.push(job);
 
+        return Promise.resolve(true);
+    }
+
+    /**
+     * Remove the job from the memory.
+     * 
+     * @param job 
+     */
+    public cancelJob(job: IJob): Promise<any> {
+        this.removeJobFromQueue(job);
+        
         return Promise.resolve(true);
     }
 
@@ -74,7 +85,7 @@ export class MemoryQueue extends BaseQueue {
 
         //TODO Log the failure message.
 
-        return Promise.resolve();
+        return Promise.resolve(true);
     }
 
     /**

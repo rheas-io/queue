@@ -55,6 +55,13 @@ export abstract class BaseQueue implements IQueue {
     public abstract async insert(job: IJob): Promise<boolean>;
 
     /**
+     * Removes or marks the job as cancelled on this queue.
+     * 
+     * @param job 
+     */
+    public abstract cancelJob(job: IJob): Promise<any> ;
+
+    /**
      * Gets the next jobs in the queue. We will fetch n number of jobs as set
      * by the _concurrency property.
      *
@@ -192,9 +199,11 @@ export abstract class BaseQueue implements IQueue {
      *
      * @param event
      */
-    protected raiseEvent(event: () => any) {
+    protected raiseEvent(event: () => Promise<any>) {
         try {
             return event();
         } catch (err) {}
+
+        return true;
     }
 }
