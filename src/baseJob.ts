@@ -1,10 +1,11 @@
 import { Str } from '@rheas/support';
-import { IJob } from '@rheas/contracts/queue';
-import { IQueable } from '@rheas/contracts/queue/queable';
+import { JsonObject } from '@rheas/contracts';
+import { IQueableData } from '@rheas/contracts/queue';
 import { ILaterTime } from '@rheas/contracts/notifications';
+import { IJob, IJobMetaData } from '@rheas/contracts/queue';
 import { queue as queueManager } from '@rheas/support/helpers';
 
-export abstract class BaseJob implements IJob {
+export abstract class BaseJob<T extends JsonObject> implements IJob<T> {
     /**
      * The unique job id.
      *
@@ -63,27 +64,39 @@ export abstract class BaseJob implements IJob {
     protected _cancelled: boolean = false;
 
     /**
+     * Data this job needs to process.
+     *
+     * @var JsonObject
+     */
+    protected _data: T;
+
+    /**
+     * Creates a new job with the data it needs to process the job. The data
+     * must be in a plain JSON format that can be stored as a string and parsed
+     * back to process the job.
+     *
+     * @param data
+     */
+    constructor(data: T) {
+        this._data = data;
+    }
+
+    /**
      * Contains the tasks to be performed by this job.
      *
      * @returns
      */
-    public abstract process<T = any>(): Promise<T>;
+    public abstract process(): Promise<any>;
 
     /**
-     * Parses the data from the queue store into properties necessary to
-     * process this job.
-     *
-     * @param data
-     */
-    public abstract fromQueuedData<T = any>(data: T): IQueable;
-
-    /**
-     * Returns the data that has to be saved in the queue store, so that the job
-     * can be retreived later from the store and can be parsed to process it.
+     * Returns the meta data of this job. The data should include the job
+     * `fileName` which is the full path to the file and `export` property,
+     * which is the name of the job class in the export object. With these
+     * properties we can recreate the job class at a later time.
      *
      * @returns
      */
-    public abstract queableData(): JSON;
+    public abstract metaData(): IJobMetaData;
 
     /**
      * Executed when the job processes successfully.
@@ -113,7 +126,7 @@ export abstract class BaseJob implements IJob {
      *
      * @returns
      */
-    public async cancel(): Promise<IJob> {
+    public async cancel(): Promise<IJob<T>> {
         this._cancelled = true;
 
         queueManager(this.queue()).cancelJob(this);
@@ -138,7 +151,7 @@ export abstract class BaseJob implements IJob {
      *
      * @param queue
      */
-    public onQueue(queue: string): IJob {
+    public onQueue(queue: string): IJob<T> {
         this._queue = queue;
 
         return this;
@@ -149,7 +162,7 @@ export abstract class BaseJob implements IJob {
      *
      * @param attempts
      */
-    public maxAttempts(attempts: number): IJob {
+    public maxAttempts(attempts: number): IJob<T> {
         this._maxAttempts = attempts;
 
         return this;
@@ -160,7 +173,7 @@ export abstract class BaseJob implements IJob {
      *
      * @param seconds Number of seconds after which a failed job has to be retried.
      */
-    public retryAfter(seconds: number): IJob {
+    public retryAfter(seconds: number): IJob<T> {
         this._retryWaitInMillis = Math.trunc(seconds * 1000);
 
         return this;
@@ -170,7 +183,7 @@ export abstract class BaseJob implements IJob {
      *
      * @param later
      */
-    public later(later: ILaterTime): IJob {
+    public later(later: ILaterTime): IJob<T> {
         this._availableAt = later.atTime();
 
         return this;
@@ -248,5 +261,18 @@ export abstract class BaseJob implements IJob {
      */
     public isCancelled(): boolean {
         return this._cancelled;
+    }
+
+    /**
+     * Returns the data that has to be saved in the queue store, so that the job
+     * can be retreived later from the store and can be parsed to process it.
+     *
+     * @returns
+     */
+    public queableData(): IQueableData<T> {
+        return {
+            data: this._data,
+            __meta: this.metaData(),
+        };
     }
 }

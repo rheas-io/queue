@@ -22,12 +22,12 @@ export class MemoryQueue extends BaseQueue {
 
     /**
      * Remove the job from the memory.
-     * 
-     * @param job 
+     *
+     * @param job
      */
     public cancelJob(job: IJob): Promise<any> {
         this.removeJobFromQueue(job);
-        
+
         return Promise.resolve(true);
     }
 

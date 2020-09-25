@@ -56,10 +56,10 @@ export abstract class BaseQueue implements IQueue {
 
     /**
      * Removes or marks the job as cancelled on this queue.
-     * 
-     * @param job 
+     *
+     * @param job
      */
-    public abstract cancelJob(job: IJob): Promise<any> ;
+    public abstract cancelJob(job: IJob): Promise<any>;
 
     /**
      * Gets the next jobs in the queue. We will fetch n number of jobs as set
