@@ -1,4 +1,4 @@
-import { Str } from '@rheas/support';
+import { Str } from '@rheas/support/str';
 import { JsonObject } from '@rheas/contracts';
 import { IQueableData } from '@rheas/contracts/queue';
 import { ILaterTime } from '@rheas/contracts/notifications';

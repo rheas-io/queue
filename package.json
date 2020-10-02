@@ -26,6 +26,9 @@
     "build-dev": "tsc --outDir ./build_dev && npm run copypackage_dev"
   },
   "devDependencies": {
+    "@rheas/contracts": "^0.0.1",
+    "@rheas/services": "^0.0.1",
+    "@rheas/support": "^0.0.1",
     "@types/jest": "^25.2.1",
     "@types/node": "^13.13.2",
     "jest": "^25.4.0",
