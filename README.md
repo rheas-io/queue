@@ -1,4 +1,15 @@
-<p align='center'><img src="https://www.kaysy.io/images/rheas-full.svg"></p>
+<p align='left'>
+<a href='https://www.kaysy.io/' target='_blank'>
+<img src="https://raw.githubusercontent.com/rheas-io/framework/master/images/rheas-full.svg" width="250px">
+</a>
+</p>
+<p align='left'>
+<a href="https://www.npmjs.com/package/@rheas/framework"><img src="https://img.shields.io/npm/dm/@rheas/framework" alt="Downloads"></a>
+<a href="https://www.npmjs.com/package/@rheas/framework"><img src="https://img.shields.io/npm/v/@rheas/framework" alt="Version"></a>
+<a href="https://www.npmjs.com/package/@rheas/framework"><img src="https://img.shields.io/npm/l/@rheas/framework" alt="License"></a>
+</p>
+
+<br>
 
 ## About Rheas
 
